@@ -1,0 +1,1 @@
+parallel -j8 sh test_par.sh script.m :::: subject_list.txt
