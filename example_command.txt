@@ -1,1 +1,17 @@
+# Parallel or SGE scheduling of SPM scripts
+
+
+## Example:
+
+Test if parallel is installed:
+
+```
 parallel -j8 sh test_par.sh script.m :::: subject_list.txt
+```
+
+To submit an actual matlab script (remember to change the paths in all scripts!):
+
+
+```
+parallel -j8 sh test_par.sh batch_realign_coreg_smooth.m :::: subject_list.txt
+```

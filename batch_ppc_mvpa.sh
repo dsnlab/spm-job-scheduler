@@ -21,14 +21,16 @@ STUDY=(FP)
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-SCRIPT=/Users/bart/Documents/FP/fMRI/scripts/ppc/spm/mvpa/batch_realign_coreg_smooth.m
+#SCRIPT=/Users/raplph/Documents/FP/fMRI/scripts/ppc/spm/mvpa/batch_realign_coreg_smooth.m
+SCRIPT=/Users/raplph/Documents/code/batch_realign_coreg_smooth.m
 
 # Set processor
 # use "qsub" for HPC
 # use "local" for local machine
 # use "X" for Mac Pro
 
-PROCESS=local
+PROCESS=parlocal
+CORES=8
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
@@ -44,4 +46,6 @@ elif [ "${PROCESS}" == "local" ]; then
 	 echo "submitting locally"
 	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > /Users/bart/Documents/"${STUDY}"/fMRI/scripts/output/"${SUBJ}"_ppc_mvpa_output.txt 2> /Users/bart/Documents/"${STUDY}"/fMRI/scripts/output/"${SUBJ}"_ppc_mvpa_error.txt
 	done
+elif [ "${PROCESS}" == "parlocal" ]; then 
+	parallel -j${CORES} sh test_par.sh ${SCRIPT} :::: subject_list.txt
 fi
