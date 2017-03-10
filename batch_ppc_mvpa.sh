@@ -21,31 +21,33 @@ STUDY=(FP)
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-#SCRIPT=/Users/raplph/Documents/FP/fMRI/scripts/ppc/spm/mvpa/batch_realign_coreg_smooth.m
-SCRIPT=/Users/raplph/Documents/code/batch_realign_coreg_smooth.m
+SCRIPT=/Users/ralph/Documents/FP/fMRI/scripts/ppc/spm/mvpa/batch_realign_coreg_smooth.m
+
+# Set output dir
+OUTPUTDIR=/Users/ralph/Documents/"${STUDY}"/fMRI/scripts/output
 
 # Set processor
 # use "qsub" for HPC
 # use "local" for local machine
-# use "X" for Mac Pro
+# use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-CORES=8
+CORES=7
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
 	for SUBJ in $SUBJLIST
 	do
 	 echo "submitting via qsub"
-	 qsub -v SUBID=${SUBJ},STUDY=${STUDY} -N x4dmerge -o /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_4dmerge_output.txt -e /vxfsvol/home/research/"${STUDY}"/rsfMRI/scripts/output/"${SUBJ}"_4dmerge_error.txt 4dmerge.sh
+	 qsub -v SUBID=${SUBJ},STUDY=${STUDY} -N x4dmerge -o "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_output.txt -e "${OUTPUTDIR}"/"${SUBJ}"_4dmerge_error.txt 4dmerge.sh
 	done
 
 elif [ "${PROCESS}" == "local" ]; then 
 	for SUBJ in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > /Users/bart/Documents/"${STUDY}"/fMRI/scripts/output/"${SUBJ}"_ppc_mvpa_output.txt 2> /Users/bart/Documents/"${STUDY}"/fMRI/scripts/output/"${SUBJ}"_ppc_mvpa_error.txt
+	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_ppc_mvpa_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_ppc_mvpa_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel -j${CORES} sh test_par.sh ${SCRIPT} :::: subject_list.txt
+	parallel --results "${OUTPUTDIR}"/{}_ppc_mvpa_output -j${CORES} bash ppc_mvpa.sh ${SCRIPT} :::: subject_list.txt
 fi

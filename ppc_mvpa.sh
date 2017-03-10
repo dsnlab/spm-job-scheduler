@@ -19,10 +19,13 @@ SCRIPT=$1
 # define subject ID from input 1
 SUB=$2
 
+# MATLAB version
+MATLABVER=R2015b
+
 # create and execute job
 echo -------------------------------------------------------------------------------
 echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_R2016a.app/bin/matlab -nosplash -nodisplay -nodesktop -r "clear; addpath('/Users/bart/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
+/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop -r "clear; addpath('/Users/Ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
