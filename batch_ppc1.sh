@@ -21,11 +21,11 @@ STUDY=tds
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-SCRIPT=/Users/bart/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
+SCRIPT=/Users/marge/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
 SCRIPTNAME=ppc1
 
 # Set output dir
-OUTPUTDIR=/Users/bart/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
+OUTPUTDIR=/Users/marge/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
 
 # Set processor
 # use "qsub" for HPC
