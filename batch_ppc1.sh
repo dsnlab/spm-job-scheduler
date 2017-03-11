@@ -21,11 +21,12 @@ STUDY=tds
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-SCRIPT=/Users/marge/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
+COMPNAME=bart
+SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
 SCRIPTNAME=ppc1
 
 # Set output dir
-OUTPUTDIR=/Users/marge/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
+OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
 
 # Set processor
 # use "qsub" for HPC
@@ -47,7 +48,7 @@ elif [ "${PROCESS}" == "local" ]; then
 	for SUBJ in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_ppc_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_ppc_error.txt
+	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
 	parallel --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${CORES} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
