@@ -15,7 +15,7 @@
 
 
 # Set your study
-STUDY=TDS/tds_repo
+STUDY=tds/tds_repo
 
 # Set subject list
 SUBJLIST=`cat subject_list.txt`
@@ -51,5 +51,5 @@ elif [ "${PROCESS}" == "local" ]; then
 	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${CORES} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
+	parallel --verbose --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${CORES} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
 fi
