@@ -15,13 +15,13 @@
 
 
 # Set your study
-STUDY=tds
+STUDY=TDS/tds_repo
 
 # Set subject list
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-COMPNAME=bart
+COMPNAME=ralph
 SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
 SCRIPTNAME=ppc1
 
@@ -34,7 +34,7 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 # use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-CORES=4
+CORES=8
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
