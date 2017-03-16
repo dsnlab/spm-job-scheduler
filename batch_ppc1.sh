@@ -8,23 +8,25 @@
 #	* Edit output and error paths
 #
 # Outputs:
-#	* Executes ppc_mvpa.sh for $SUB and $SCRIPT
+#	* Executes spm_job.sh for $SUB and $SCRIPT
 #
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
 
 # Set your study
-STUDY=(FP)
+STUDY=tds/tds_repo
 
 # Set subject list
 SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
-SCRIPT=/Users/ralph/Documents/FP/fMRI/scripts/ppc/spm/mvpa/batch_realign_coreg_smooth.m
+COMPNAME=ralph
+SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
+SCRIPTNAME=ppc1
 
 # Set output dir
-OUTPUTDIR=/Users/ralph/Documents/"${STUDY}"/fMRI/scripts/output
+OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
 
 # Set processor
 # use "qsub" for HPC
@@ -46,8 +48,8 @@ elif [ "${PROCESS}" == "local" ]; then
 	for SUBJ in $SUBJLIST
 	do
 	 echo "submitting locally"
-	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_ppc_mvpa_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_ppc_mvpa_error.txt
+	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel --results "${OUTPUTDIR}"/{}_ppc_mvpa_output -j${CORES} bash ppc_mvpa.sh ${SCRIPT} :::: subject_list.txt
+	parallel --verbose --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${CORES} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
 fi

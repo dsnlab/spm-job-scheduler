@@ -13,10 +13,10 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-# define matlab script to run from input 2
+# define matlab script to run from input 1
 SCRIPT=$1
 
-# define subject ID from input 1
+# define subject ID from input 2
 SUB=$2
 
 # MATLAB version
@@ -28,4 +28,4 @@ echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop -r "clear; addpath('/Users/Ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
+/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop -singleCompThread -r "clear; addpath('/Users/ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
