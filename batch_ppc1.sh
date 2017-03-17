@@ -34,7 +34,7 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 # use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-CORES=7
+MAXJOBS=1
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
@@ -51,5 +51,5 @@ elif [ "${PROCESS}" == "local" ]; then
 	 bash ppc_mvpa.sh ${SUBJ} ${SCRIPT} > "${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${SCRIPTNAME}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel --verbose --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${CORES} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
+	parallel --verbose --results "${OUTPUTDIR}"/{}_${SCRIPTNAME}_output -j${MAXJOBS} bash spm_job.sh ${SCRIPT} :::: subject_list.txt
 fi
