@@ -21,7 +21,7 @@ SUB=$2
 
 # MATLAB version
 MATLABVER=R2015b
-SINGLECOREMATLAB=false
+SINGLECOREMATLAB=true
 ADDITIONALOPTIONS=""
 
 if "$SINGLECOREMATLAB"; then
@@ -34,4 +34,4 @@ echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop ${ADDITIONALOPTIONS} -r "clear; addpath('/Users/ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); spm_jobman('run',matlabbatch); exit"
+/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop ${ADDITIONALOPTIONS} -r "clear; addpath('/Users/ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; run('$SCRIPT'); %spm_jobman('run',matlabbatch); exit"

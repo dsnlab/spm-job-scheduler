@@ -22,8 +22,8 @@ SUBJLIST=`cat subject_list.txt`
 
 # Set MATLAB script path
 COMPNAME=ralph
-SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
-SCRIPTNAME=ppc1
+SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/normalization_template.m
+SCRIPTNAME=ppc2
 
 # Set output dir
 OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
@@ -34,7 +34,7 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 # use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-MAXJOBS=1
+MAXJOBS=8
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
