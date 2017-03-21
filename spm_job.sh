@@ -13,9 +13,10 @@
 # D.Cos 2017.3.7
 #--------------------------------------------------------------
 
-if [ -z $1 -o -z $2 -o -z $3 ]; then
-	if [ -z $REPLACESID -o -z $SCRIPT -o -z $SUB ]; then
+if [[ -z $1 || -z $2 || -z $3 ]]; then
+	if [[ -z $REPLACESID || -z $SCRIPT || -z $SUB ]]; then
 		echo "Aguments not supplied on command line or in environment"
+		exit 1
 	fi
 else
 	# define subject id to replace in script from input 1
@@ -37,4 +38,4 @@ echo "${SUB}"
 echo "Running ${SCRIPT}"
 echo -------------------------------------------------------------------------------
 
-/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop -singleCompThread -r "clear; addpath('/Users/ralph/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; display([sub,script_file,replacesid]); run('make_sid_matlabbatch.m'); %spm_jobman('run',matlabbatch); exit"
+/Applications/MATLAB_"${MATLABVER}".app/bin/matlab -nosplash -nodisplay -nodesktop -singleCompThread -r "clear; addpath('/Users/marge/Documents/MATLAB/spm12'); spm_jobman('initcfg'); sub='$SUB'; script_file='$SCRIPT'; replacesid='$REPLACESID'; run('make_sid_matlabbatch.m'); spm_jobman('run',matlabbatch); exit"
