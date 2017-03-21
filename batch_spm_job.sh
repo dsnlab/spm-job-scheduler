@@ -38,7 +38,7 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 # use "parlocal" for local parallel processing
 
 PROCESS=parlocal
-CORES=7
+MAXJOBS=8
 
 # Create and execute batch job
 if [ "${PROCESS}" == "qsub" ]; then 
