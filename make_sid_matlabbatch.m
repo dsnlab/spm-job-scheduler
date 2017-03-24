@@ -10,7 +10,7 @@ cellfun(@eval, newtext);
 
 [outdir, outfile] = fileparts(script_file);
 
-outdirfull = fullfile(outdir,'sid_batches');
+outdirfull = fullfile(outdir,'sid_batches',outfile);
 
 if ~exist(outdirfull, 'dir')
   mkdir(outdirfull);
