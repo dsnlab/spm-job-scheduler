@@ -34,8 +34,8 @@ OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_
 
 # Set processor
 # use "qsub" for HPC
-# use "local" for local machine
-# use "parlocal" for local parallel processing
+# use "serlocal" for local, serial processing
+# use "parlocal" for local, parallel processing
 
 PROCESS=parlocal
 MAXJOBS=8
@@ -48,12 +48,12 @@ if [ "${PROCESS}" == "qsub" ]; then
 	 qsub -v REPLACESID=${REPLACESID},SCRIPT=${SCRIPT},SUB=${SUB} -N ${RESULTS_INFIX} -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_output.txt -e "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_error.txt spm_job.sh
 	done
 
-elif [ "${PROCESS}" == "local" ]; then 
+elif [ "${PROCESS}" == "serlocal" ]; then 
 	for SUB in $SUBJLIST
 	do
 	 echo "submitting locally"
 	 bash spm_job.sh ${REPLACESID} ${SCRIPT} ${SUB} > "${OUTPUTDIR}"/"${SUBJ}"_${RESULTS_INFIX}_output.txt 2> /"${OUTPUTDIR}"/"${SUBJ}"_${RESULTS_INFIX}_error.txt
 	done
 elif [ "${PROCESS}" == "parlocal" ]; then 
-	parallel --verbose --results "${OUTPUTDIR}"/{}_${RESULTS_INFIX}_output -j${CORES} bash spm_job.sh ${REPLACESID} ${SCRIPT} :::: subject_list.txt
+	parallel --verbose --results "${OUTPUTDIR}"/{}_${RESULTS_INFIX}_output -j${MAXJOBS} bash spm_job.sh ${REPLACESID} ${SCRIPT} :::: subject_list.txt
 fi
