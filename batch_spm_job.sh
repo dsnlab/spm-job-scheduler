@@ -23,31 +23,45 @@ SUBJLIST=`cat subject_list.txt`
 REPLACESID='101'
 
 # Set MATLAB script path
-COMPNAME=ralph
-SCRIPT=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/spm/coreg_realign_unwarp_coreg_segment.m
+COMPNAME=ralph #use this for help specifying paths to run locally
+SCRIPT=/home/flournoy/test.m
+
+#SPM Path
+SPM_PATH=/home/flournoy/code/SPM12
 
 # Tag the results files
-RESULTS_INFIX=fx_allconds
+RESULTS_INFIX=test
 
 # Set output dir
-OUTPUTDIR=/Users/${COMPNAME}/Documents/${STUDY}/fMRI/scripts/ppc/shell/schedule_spm_jobs/output/
+OUTPUTDIR=/home/flournoy/code/test_output
 
 # Set processor
-# use "qsub" for HPC
+# use "slurm" for HPC
 # use "serlocal" for local, serial processing
 # use "parlocal" for local, parallel processing
 
-PROCESS=parlocal
+PROCESS=slurm
+
+#Only matters for parlocal
 MAXJOBS=8
 
+#Only matters for slurm
+cpuspertask=1
+mempercpu=2G
+
 # Create and execute batch job
-if [ "${PROCESS}" == "qsub" ]; then 
-	for SUBJ in $SUBJLIST
+if [ "${PROCESS}" == "slurm" ]; then 
+	for SUB in $SUBJLIST
 	do
 	 echo "submitting via qsub"
-	 qsub -v REPLACESID=${REPLACESID},SCRIPT=${SCRIPT},SUB=${SUB} -N ${RESULTS_INFIX} -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_output.txt -e "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}_error.txt spm_job.sh
+	 sbatch --export=REPLACESID=$REPLACESID,SCRIPT=$SCRIPT,SUB=$SUB,SPM_PATH=$SPM_PATH,PROCESS=$PROCESS  \
+		 --job-name=${RESULTS_INFIX} \
+		 -o "${OUTPUTDIR}"/"${SUB}"_${RESULTS_INFIX}.log \
+		 --cpus-per-task=${cpuspertask} \
+		 --mem-per-cpu=${mempercpu} \
+		 spm_job.sh
+	 sleep .25
 	done
-
 elif [ "${PROCESS}" == "serlocal" ]; then 
 	for SUB in $SUBJLIST
 	do
