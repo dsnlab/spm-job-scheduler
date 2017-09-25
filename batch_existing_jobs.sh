@@ -1,10 +1,10 @@
 #!/bin/bash
 #
 #Remember to figure out how many files in the dir first:
-#    ls -1 <your/dir/name/*mat> | wc -l
+#    ls -1 directory/where/jobs/are/job_name_pattern*mat | wc -l
 #
 #Then use an array batch to run this file:
-#    sbatch -a 0-[number of .mat files] batch_dir_of_jobs.sh directory/where/jobs/are/
+#    sbatch -a 0-[number of .mat files minus 1] batch_existing_jobs.sh directory/where/jobs/are/job_name_pattern*mat 
 #
 #SBATCH --job-name=SET_ME
 #SBATCH --output=SET_ME-%A_%a.log
@@ -16,14 +16,14 @@
 SPM_PATH='/projects/dsnlab/SPM12'
 ADDITIONALOPTIONS="-singleCompThread"
 
-if [ -z "$1" ]
-  then
-    echo "No argument supplied. Must supply directory with spm job mat files."
+if [ "$#" -eq 0 ]; then
+    echo "No arguments supplied. Must supply job .mat files as arguments"
     exit 1
+else
+    matFiles=( "$@" )
 fi
 
-filelist=(`ls -1 $(realpath $1)/*mat`)
-jobfile=${filelist[$SLURM_ARRAY_TASK_ID]}
+jobfile=$(realpath ${matFiles[$SLURM_ARRAY_TASK_ID]})
 
 echo "Running batch job"
 echo "   $jobfile"
